@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Iframe Test Tool</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+</head>
+<body>
+    <noscript>
+        <strong>We're sorry but this app doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+
+    <div id="app">
+    <v-app>
+    
+        <v-toolbar app height="56">
+            <v-toolbar-title class="headline hidden-md-and-down mr-5">
+                <span class="font-weight-light">Iframe Test</span>
+            </v-toolbar-title>
+            <v-layout align-center fill-height>
+                <v-flex xs12 mr-3>
+                    <v-text-field
+                        class="pt-0"
+                        type="url"
+                        v-model="url"
+                        label="Enter a URL here: https://..."
+                        required
+                        single-line
+                        clearable
+                        hide-details
+                    ></v-text-field>
+                </v-flex>
+                <v-flex lg1 md2 sm3 mr-3 hidden-xs-only text-align-middle>
+                    <v-combobox
+                        class="pt-0"
+                        v-model="width"
+                        label= "Width"
+                        single-line
+                        :items="sizes.width"
+                        hide-details
+                        hide-selected
+                    />
+                </v-flex>
+                <v-flex lg1 md2 sm3 mr-3 hidden-xs-only>
+                    <v-combobox
+                        class="pt-0"
+                        class="text-align-middle"
+                        v-model="height"
+                        label= "Height"
+                        single-line
+                        :items="sizes.height"
+                        hide-details
+                        hide-selected
+                    />
+                </v-flex>
+                <v-flex shrink hidden-sm-and-down>
+                    <v-btn
+                        color="primary"
+                        target="_blank"
+                        :href="url"
+                    >
+                        <span>Open in new window</span>
+                    </v-btn>
+                </v-flex>
+            </v-layout>
+        </v-toolbar>
+
+        <v-content>
+            <v-layout text-xs-center wrap mt-4>
+                <v-flex xs12>
+                    <iframe
+                        v-if="url"
+                        :src="url"
+                        :width="width"
+                        :height="height"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                        style="max-width: 100%; max-height: 100%;"
+                    >
+                    </iframe>
+                    <h2 v-else class="title">Please enter a URL to visit</h2>
+                </v-flex>
+            </v-layout>
+        </v-content>
+        
+    </v-app>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: () => ({
+              url: "",
+              sizes: {
+                width: [1024, 600, 300],
+                height: [768, 300, 600]
+              }
+            }),
+            watch: {
+                url: (value) => {
+                    localStorage.setItem('iframeTestUrl', value);
+                }
+            },
+            created: function() {
+                this.url = new URLSearchParams(window.location.search).get('url') || localStorage.getItem('iframeTestUrl');
+            },
+            props: {
+                width: {
+                    default: 1024,
+                    type: Number
+                },
+                height: {
+                    default: 600,
+                    type: Number
+                }
+            }
+        })
+    </script>
+</body>
+</html>

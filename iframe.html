@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
@@ -28,7 +29,7 @@
                         class="pt-0"
                         type="url"
                         v-model="url"
-                        label="Enter a URL here: https://..."
+                        label="https://..."
                         required
                         single-line
                         clearable
@@ -58,13 +59,21 @@
                         hide-selected
                     />
                 </v-flex>
+                <v-flex shrink hidden-md-and-down>
+                    <v-btn
+                            color="primary"
+                            v-on:click="copyLink"
+                    >
+                        <span>Copy</span>
+                    </v-btn>
+                </v-flex>
                 <v-flex shrink hidden-sm-and-down>
                     <v-btn
                         color="primary"
                         target="_blank"
                         :href="url"
                     >
-                        <span>Open in new window</span>
+                        <span>Open in new tab</span>
                     </v-btn>
                 </v-flex>
             </v-layout>
@@ -84,7 +93,7 @@
                         style="max-width: 100%; max-height: 100%;"
                     >
                     </iframe>
-                    <h2 v-else class="title">Please enter a URL to visit</h2>
+                    <h2 v-else class="title grey--text text--lighten-1"><br><br>Please enter a URL to iframe above</h2>
                 </v-flex>
             </v-layout>
         </v-content>
@@ -93,6 +102,23 @@
     </div>
 
     <script>
+        function copyStringToClipboard (str) {
+            // Create new element
+            var el = document.createElement('textarea');
+            // Set value (string to be copied)
+            el.value = str;
+            // Set non-editable to avoid focus and move outside of view
+            el.setAttribute('readonly', '');
+            el.style = {position: 'absolute', left: '-9999px'};
+            document.body.appendChild(el);
+            // Select text inside element
+            el.select();
+            // Copy text to clipboard
+            document.execCommand('copy');
+            // Remove temporary element
+            document.body.removeChild(el);
+        }
+
         new Vue({
             el: '#app',
             data: () => ({
@@ -107,8 +133,14 @@
                     localStorage.setItem('iframeTestUrl', value);
                 }
             },
+            methods: {
+                copyLink: function() {
+                    copyStringToClipboard(window.location.href.split('?')[0]+'?url='+this.url);
+                }
+            },
             created: function() {
-                this.url = new URLSearchParams(window.location.search).get('url') || localStorage.getItem('iframeTestUrl');
+                var url = new URLSearchParams(window.location.search).get('url') || localStorage.getItem('iframeTestUrl');
+                this.url = url !== null ? url : '';
             },
             props: {
                 width: {

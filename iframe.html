@@ -2,14 +2,15 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Iframe Test Tool</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 </head>
 <body>
     <noscript>
@@ -18,13 +19,12 @@
 
     <div id="app">
     <v-app>
-    
-        <v-toolbar app height="56">
+        <v-app-bar height="56" max-height="56">
             <v-toolbar-title class="headline hidden-md-and-down mr-5">
                 <span class="font-weight-light">Iframe Test</span>
             </v-toolbar-title>
-            <v-layout align-center fill-height>
-                <v-flex xs12 mr-3>
+            <v-row align-center fill-height>
+                <v-col xs="12" mr-3>
                     <v-text-field
                         class="pt-0"
                         type="url"
@@ -35,8 +35,8 @@
                         clearable
                         hide-details
                     ></v-text-field>
-                </v-flex>
-                <v-flex lg1 md2 sm3 mr-3 hidden-xs-only text-align-middle>
+                </v-col>
+                <v-col lg="1" md="2" sm="3" class="mr-3 hidden-xs-only text-align-middle">
                     <v-combobox
                         class="pt-0"
                         v-model="width"
@@ -46,8 +46,8 @@
                         hide-details
                         hide-selected
                     />
-                </v-flex>
-                <v-flex lg1 md2 sm3 mr-3 hidden-xs-only>
+                </v-col>
+                <v-col lg="1" md="2" sm="3" class="mr-3 hidden-xs-only">
                     <v-combobox
                         class="pt-0"
                         class="text-align-middle"
@@ -58,16 +58,16 @@
                         hide-details
                         hide-selected
                     />
-                </v-flex>
-                <v-flex shrink hidden-md-and-down>
+                </v-col>
+                <v-col shrink hidden-md-and-down>
                     <v-btn
-                            color="primary"
-                            v-on:click="copyLink"
+                        color="primary"
+                        v-on:click="copyLink"
                     >
                         <span>Copy</span>
                     </v-btn>
-                </v-flex>
-                <v-flex shrink hidden-sm-and-down>
+                </v-col>
+                <v-col shrink hidden-sm-and-down>
                     <v-btn
                         color="primary"
                         target="_blank"
@@ -75,13 +75,13 @@
                     >
                         <span>Open in new tab</span>
                     </v-btn>
-                </v-flex>
-            </v-layout>
-        </v-toolbar>
+                </v-col>
+            </v-row>
+        </v-app-bar>
 
         <v-content>
-            <v-layout text-xs-center wrap mt-4>
-                <v-flex xs12>
+            <v-row text-xs-center wrap mt-4>
+                <v-col xs12>
                     <iframe
                         v-if="url"
                         :src="url"
@@ -94,8 +94,8 @@
                     >
                     </iframe>
                     <h2 v-else class="title grey--text text--lighten-1"><br><br>Please enter a URL to iframe above</h2>
-                </v-flex>
-            </v-layout>
+                </v-col>
+            </v-row>
         </v-content>
         
     </v-app>
@@ -121,6 +121,7 @@
 
         new Vue({
             el: '#app',
+            vuetify: new Vuetify(),
             data: () => ({
               url: "",
               sizes: {
